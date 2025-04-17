@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace peresistence.Repositeries
 {
-    public class GenericRepository<TEntity, TKey> : GetRepository<TEntity, TKey> where TEntity : BaseEntity<TKey>
+    public class GenericRepository<TEntity, TKey> : IGenericRepository<TEntity, TKey> where TEntity : BaseEntity<TKey>
     {
         private readonly StoreDbContext _context;
 
@@ -24,9 +24,9 @@ namespace peresistence.Repositeries
 
             if (typeof(TEntity) == typeof(Product))
             {
-                return trackChange
-                    ? await _context.Products.Include(P => P.ProductBrand).Include(P => P.ProductType).ToListAsync() as IEnumerable<TEntity> 
-                    : await _context.Set<TEntity>().AsNoTracking().ToListAsync();
+                return trackChange ?
+                  await _context.Products.Include(P => P.ProductBrand).Include(P => P.ProductType).ToListAsync() as IEnumerable<TEntity>
+                : await _context.Products.Include(P => P.ProductBrand).Include(P => P.ProductType).AsNoTracking().ToListAsync() as IEnumerable<TEntity>;
             }
 
 

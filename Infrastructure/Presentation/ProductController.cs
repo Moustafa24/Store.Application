@@ -15,7 +15,7 @@ namespace Presentation
         [HttpGet]
         public async Task<IActionResult> GetAllProduct()
         {
-            var result =serviceManager.ProductService.GetAllProductsAsync();
+            var result =await serviceManager.ProductService.GetAllProductsAsync();
             if (result is null) return BadRequest();
             return Ok(result); //200
 
@@ -29,6 +29,29 @@ namespace Presentation
             return Ok(result);
         }
 
+        // Get All Brands :  Get All Brands 
+        [HttpGet ("brands")]  //Get : api/products/Brands
+         public async Task<IActionResult> GetAllBrands()
+         {
+            var result  = await serviceManager.ProductService.GetAllBrandsAsync();
+
+            if (result is null) return BadRequest(); 
+
+            return Ok(result);
+         }
+
+
+        //Get All Types
+
+        [HttpGet("types")]  //Get : api/products/types
+        public async Task<IActionResult> GetAllTypes()
+        {
+            var result = await serviceManager.ProductService.GetAllTypesAsync();
+
+            if (result is null) return BadRequest();
+
+            return Ok(result);
+        }
 
 
 
