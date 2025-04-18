@@ -12,10 +12,17 @@ namespace Presentation
     [Route("api/[controller]")]
     public class ProductController(IServiceManager serviceManager) : ControllerBase
     {
+
+        // sort : nameasc [Default]
+        // sort : namedesc
+        // sort : PriceDec
+        // sort : PriceAsc
+
+
         [HttpGet]
-        public async Task<IActionResult> GetAllProduct()
+        public async Task<IActionResult> GetAllProduct(int? brandId , int? typeId , string? sort , int pageIndex= 1 ,int pageSize = 5)
         {
-            var result =await serviceManager.ProductService.GetAllProductsAsync();
+            var result =await serviceManager.ProductService.GetAllProductsAsync(brandId,typeId , sort , pageIndex , pageSize);
             if (result is null) return BadRequest();
             return Ok(result); //200
 
