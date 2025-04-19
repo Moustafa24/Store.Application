@@ -78,11 +78,14 @@ namespace peresistence.Repositeries
         {
            return await ApplySpecification(Spec).FirstOrDefaultAsync();
         }
+        public async Task<int> CountAsync(ISpecifications<TEntity, TKey> spec)
+        {
+            return await ApplySpecification(spec).CountAsync();
+        }
         private IQueryable<TEntity> ApplySpecification (ISpecifications<TEntity , TKey> Spec)
         {
             return SpecificationEvaluator.GetQuery(_context.Set<TEntity>(), Spec);
         }
-
 
     }
 }
