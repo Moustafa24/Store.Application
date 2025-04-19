@@ -14,9 +14,9 @@ namespace Services
 {
     public class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : IProductService
     {
-        public async Task<IEnumerable<ProductResultDto>> GetAllProductsAsync(int? brandId, int? typeId, string? sort  , int pageIndex , int pageSize)
+        public async Task<IEnumerable<ProductResultDto>> GetAllProductsAsync(ProductSpecificationsParamters Specifications)
         {
-            var Spec = new ProductWithBrandsAndTypeSpecifications(brandId,typeId , sort ,pageIndex, pageSize);
+            var Spec = new ProductWithBrandsAndTypeSpecifications(Specifications);
             
            
 
