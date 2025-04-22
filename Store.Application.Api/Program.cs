@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using peresistence;
 using Services;
 using Services.Abstractions;
+using Store.Application.Api.Middlewares;
 using AssemblyMapping = Services.AssemblyRefrence;
 namespace Store.Application.Api
 {
@@ -43,7 +44,7 @@ namespace Store.Application.Api
 
             #endregion
 
-
+            app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
