@@ -7,6 +7,7 @@ using Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 
 namespace peresistence
 {
@@ -21,6 +22,10 @@ namespace peresistence
             });
             services.AddScoped<IDbInitializer, DbInitializer>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IConnectionMultiplexer>((ServiceProvider)=>
+            {
+                return ConnectionMultiplexer.Connect(configuration.GetConnectionString("Redis")!);
+            });
 
             return services;
         }
