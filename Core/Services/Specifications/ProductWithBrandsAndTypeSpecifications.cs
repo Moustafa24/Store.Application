@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Models;
+﻿using Domain.Models;
 using Shared;
 
 namespace Services.Specifications
 {
-    public class ProductWithBrandsAndTypeSpecifications :BaseSpecification<Product, int>
+    public class ProductWithBrandsAndTypeSpecifications : BaseSpecification<Product, int>
     {
-        public ProductWithBrandsAndTypeSpecifications(int id): base(P=>P.Id == id)
+        public ProductWithBrandsAndTypeSpecifications(int id) : base(P => P.Id == id)
         {
             ApplyInclude();
         }
 
-        public ProductWithBrandsAndTypeSpecifications(ProductSpecificationsParamters Specifications) :base 
+        public ProductWithBrandsAndTypeSpecifications(ProductSpecificationsParamters Specifications) : base
             (
-            
-            P=>
-            (string.IsNullOrEmpty(Specifications.Search)||P.Name.ToLower().Contains(Specifications.Search.ToLower()))&&
-            (!Specifications.BrandId.HasValue || P.BrandId== Specifications.BrandId)
+
+            P =>
+            (string.IsNullOrEmpty(Specifications.Search) || P.Name.ToLower().Contains(Specifications.Search.ToLower())) &&
+            (!Specifications.BrandId.HasValue || P.BrandId == Specifications.BrandId)
             && (!Specifications.TypeId.HasValue || P.TypeId == Specifications.TypeId)
             )
         {
@@ -34,7 +29,7 @@ namespace Services.Specifications
         {
 
             AddInclude(P => P.ProductBrand);
-            
+
             AddInclude(P => P.ProductType);
         }
 
@@ -67,14 +62,14 @@ namespace Services.Specifications
 
         }
 
-        protected void ApplyPagination(int pageIndex , int pageSize)
+        protected void ApplyPagination(int pageIndex, int pageSize)
         {
             IsPagination = true;
             Take = pageSize;
-            Skip = (pageIndex-1)*pageSize;   
+            Skip = (pageIndex - 1) * pageSize;
         }
 
     }
 
 
-}   
+}

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Services.Abstractions;
 
 namespace Services
@@ -12,10 +7,10 @@ namespace Services
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-          services.AddAutoMapper(typeof(AssemblyRefrence).Assembly);
+            services.AddAutoMapper(typeof(AssemblyRefrence).Assembly);
             services.AddScoped<IServiceManager, ServicesManager>();
             return services;
-        } 
+        }
 
     }
 }

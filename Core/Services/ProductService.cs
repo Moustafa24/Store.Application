@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Domain.Contracts;
 using Domain.Exceptions;
 using Domain.Models;
@@ -18,22 +13,22 @@ namespace Services
         public async Task<PginationResponse<ProductResultDto>> GetAllProductsAsync(ProductSpecificationsParamters Specifications)
         {
             var Spec = new ProductWithBrandsAndTypeSpecifications(Specifications);
-            
-           
+
+
 
             var products = await unitOfWork.GetRepository<Product, int>().GetAllAsync(Spec);
             var specCount = new ProductWithBrandsAndTypeSpecifications(Specifications);
-            var count  = await unitOfWork.GetRepository<Product, int >().CountAsync(specCount);  
+            var count = await unitOfWork.GetRepository<Product, int>().CountAsync(specCount);
 
             var result = mapper.Map<IEnumerable<ProductResultDto>>(products);
             return new PginationResponse<ProductResultDto>(Specifications.PageIndex, Specifications.PageSize, count, result);
         }
 
-        public async Task<ProductResultDto?> GetProductByIdAsync(int id)  
+        public async Task<ProductResultDto?> GetProductByIdAsync(int id)
         {
             var Spec = new ProductWithBrandsAndTypeSpecifications(id);
             var product = await unitOfWork.GetRepository<Product, int>().GetAsync(Spec);
-            if (product is null)  throw new ProductNotFoundExceptions(id) ;
+            if (product is null) throw new ProductNotFoundExceptions(id);
 
             var result = mapper.Map<ProductResultDto>(product);
             return result;
