@@ -27,7 +27,7 @@ namespace peresistence.Repositeries
         }
 
 
-        public async Task<CustomerBasket?> UpdateBasketAsyncc(CustomerBasket basket, TimeSpan? timeToLive = null)
+        public async Task<CustomerBasket?> UpdateBasketAsync(CustomerBasket basket, TimeSpan? timeToLive = null)
         {
             var redusvalue = JsonSerializer.Serialize(basket);
             var flag= _database.StringSet(basket.Id , redusvalue, TimeSpan.FromDays(30));
