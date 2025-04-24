@@ -10,5 +10,7 @@ namespace Services.Abstractions
     {
          IProductService ProductService { get;  }
          IBasketSrvice BasketSrvice { get;  }
+         ICacheService CacheService { get;  }
+
     }
 }
