@@ -1,6 +1,9 @@
 ﻿using Domain.Contracts;
+using Domain.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using peresistence;
+using peresistence.Identity;
 using Services;
 using Shared.ErrorModel;
 using Store.Application.Api.Middlewares;
@@ -15,13 +18,15 @@ namespace Store.Application.Api.Extensions
             services.AddBuiltInServices();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddSwaggerServices();
+            services.ConfgureServices();
 
 
            services.AddInfrastructureServices(configuration);
+            services.AddIdentityServices();
+
            services.AddApplicationServices();
 
         
-          services.ConfgureServices();
 
 
             return services;
@@ -35,6 +40,17 @@ namespace Store.Application.Api.Extensions
 
             return services;
         }
+
+
+        private static IServiceCollection AddIdentityServices(this IServiceCollection services)
+        {
+            services.AddIdentity<AppUser, IdentityRole>()
+                .AddEntityFrameworkStores<StoreIdentityDbContext>();
+
+
+            return services;
+        }
+
 
         private static IServiceCollection AddSwaggerServices(this IServiceCollection services)
         {
@@ -110,7 +126,7 @@ namespace Store.Application.Api.Extensions
             using var scope = app.Services.CreateScope();
             var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>(); // ASK CLR Create Object  
             await dbInitializer.InitializeAsync();
-
+            await dbInitializer.InitializeIdentityAsync();
 
             #endregion
 
