@@ -56,6 +56,8 @@ namespace Store.Application.Api.Middlewares
             {
                 NotFoundException => StatusCodes.Status404NotFound,
                 BadRequestException => StatusCodes.Status400BadRequest,
+                UnAuthorizedException => StatusCodes.Status401Unauthorized,
+                ValidationExceptions =>HandlingValidationAsync((ValidationExceptions)ex , respose) ,
                 _ => StatusCodes.Status500InternalServerError
             };
 
@@ -74,5 +76,13 @@ namespace Store.Application.Api.Middlewares
             };
             await context.Response.WriteAsJsonAsync(response);
         }
+
+        private static  int  HandlingValidationAsync(ValidationExceptions ex , ErrorDetails response)
+        {
+            response.Errors = ex.Errors;
+
+            return StatusCodes.Status400BadRequest;
+        }
+
     }
 }
