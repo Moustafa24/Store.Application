@@ -1,0 +1,22 @@
+﻿namespace Domain.Models.order
+{
+    public class DeliveryMethod :BaseEntity<Guid>
+    {
+        public DeliveryMethod()
+        {
+            
+        }
+        public DeliveryMethod(string shortName, string description, string deliveryTime, double cost)
+        {
+            ShortName = shortName;
+            Description = description;
+            DeliveryTime = deliveryTime;
+            Cost = cost;
+        }
+
+        public string ShortName { get; set; }
+        public string Description { get; set; }
+        public string DeliveryTime { get; set; }
+        public double Cost { get; set; }
+    }
+}
