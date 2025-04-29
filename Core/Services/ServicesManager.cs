@@ -2,6 +2,7 @@
 using Domain.Contracts;
 using Domain.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Services.Abstractions;
 
 namespace Services
@@ -10,7 +11,8 @@ namespace Services
         IMapper mapper,
         IBasketRepository basketRepository,
         ICacheRepository cacheRepository ,
-        UserManager<AppUser> userManager
+        UserManager<AppUser> userManager,
+        IConfiguration configuration
         ) : IServiceManager
     {
         public IProductService ProductService { get; } = new ProductService(unitOfWork, mapper);
@@ -19,6 +21,6 @@ namespace Services
 
         public ICacheService CacheService { get; } = new ChacheService(cacheRepository);
 
-        public IAuthService AuthService { get; } = new AuthService(userManager);
+        public IAuthService AuthService { get; } = new AuthService(userManager, configuration);
     }
 }
