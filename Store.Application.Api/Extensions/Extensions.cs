@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using peresistence;
 using peresistence.Identity;
 using Services;
+using Shared;
 using Shared.ErrorModel;
 using Store.Application.Api.Middlewares;
 
@@ -24,8 +25,7 @@ namespace Store.Application.Api.Extensions
            services.AddInfrastructureServices(configuration);
             services.AddIdentityServices();
 
-           services.AddApplicationServices();
-
+           services.AddApplicationServices(configuration);
         
 
 

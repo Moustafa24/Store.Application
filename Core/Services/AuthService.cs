@@ -12,10 +12,11 @@ using Services.Abstractions;
 using Shared;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Services
 {
-    public class AuthService(UserManager<AppUser> userManager ,IConfiguration configuration ) : IAuthService
+    public class AuthService(UserManager<AppUser> userManager ,IOptions<JwtOptions> options ) : IAuthService
     {
 
 
@@ -70,6 +71,8 @@ namespace Services
             //Payload
             //Signature
 
+            var jwtOPtions = options.Value;
+
             var authClaim = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name , user.UserName),
@@ -83,14 +86,14 @@ namespace Services
                 authClaim.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtOptions:SecretKey"]));
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOPtions.SecretKey));
 
 
             var token = new JwtSecurityToken(
-                issuer: configuration["JwtOptions:Issuer"],
-                audience: configuration["JwtOptions:Audience"],
+                issuer:jwtOPtions.Issuer,
+                audience:jwtOPtions.Audience,
                 claims: authClaim,
-                expires: DateTime.UtcNow.AddDays(double.Parse(configuration["JwtOptions:DyrationInDay"])),
+                expires: DateTime.UtcNow.AddDays(jwtOPtions.DyrationInDay),
                 signingCredentials: new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256Signature)
 
 
