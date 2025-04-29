@@ -1,5 +1,6 @@
 ﻿using Domain.Contracts;
 using Domain.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using peresistence;
@@ -8,6 +9,9 @@ using Services;
 using Shared;
 using Shared.ErrorModel;
 using Store.Application.Api.Middlewares;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace Store.Application.Api.Extensions
 {
@@ -26,16 +30,49 @@ namespace Store.Application.Api.Extensions
             services.AddIdentityServices();
 
            services.AddApplicationServices(configuration);
-        
 
+            services.ConfigureJwtServices(configuration);
+     
 
             return services;
         }
 
 
+
         private static IServiceCollection AddBuiltInServices(this IServiceCollection services)
         {
             services.AddControllers();
+
+
+            return services;
+        }
+
+        private static IServiceCollection  ConfigureJwtServices(this IServiceCollection services , IConfiguration configuration)
+        {
+            var JwtOptions = configuration.GetSection("JwtOptions").Get<JwtOptions>();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+
+
+                    ValidIssuer = JwtOptions.Issuer,
+                    ValidAudience = JwtOptions.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.SecretKey))
+                };
+            });
+
+
 
 
             return services;
@@ -109,6 +146,7 @@ namespace Store.Application.Api.Extensions
             app.UseStaticFiles();
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
