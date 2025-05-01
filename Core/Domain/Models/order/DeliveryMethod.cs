@@ -1,6 +1,6 @@
 ﻿namespace Domain.Models.order
 {
-    public class DeliveryMethod :BaseEntity<Guid>
+    public class DeliveryMethod :BaseEntity<int>
     {
         public DeliveryMethod()
         {

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Domain.Contracts;
 using Domain.Identity;
 using Domain.Models;
+using Domain.Models.order;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using peresistence.Identity;
@@ -97,6 +98,25 @@ namespace peresistence
                         await _context.SaveChangesAsync();
                     }
                 }
+
+
+
+                if (!_context.DeliveryMethods.Any())
+                {
+                    // 1. Read All Data From delivery Json File as String  
+                    var deliveryData = await File.ReadAllTextAsync(path: @"..\Infrastructure\peresistence\Data\Seeding\delivery.json");
+
+                    // 2. Transform String To C# Objects (List<Product>)  
+                    var delivery = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveryData);
+
+                    // 3. Add List<Products> To Database  
+                    if (delivery is not null && delivery.Any())
+                    {
+                        await _context.DeliveryMethods.AddRangeAsync(delivery);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+
 
             }
             catch (Exception ex)

@@ -8,13 +8,14 @@
         }
         public OrderItem(ProductInOrderItem productInOrderItem, int quantity, decimal price)
         {
-            this.productInOrderItem = productInOrderItem;
+            Product = productInOrderItem;
             Quantity = quantity;
             Price = price;
         }
 
-        public ProductInOrderItem productInOrderItem { get; set; }
+        public ProductInOrderItem Product { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
+
     }
 }
