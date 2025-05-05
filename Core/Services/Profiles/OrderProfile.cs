@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using Domain.Models.order;
+using OrderAddress =  Domain.Models.order.Address;
+using UserAddress =  Domain.Identity.Address;
 using Shared.OrderModels;
+using Domain.Models.order;
+
 
 namespace Services.Profiles
 {
@@ -14,7 +17,8 @@ namespace Services.Profiles
         public OrderProfile()
         {
 
-            CreateMap<Address, AddressDto>().ReverseMap();
+            CreateMap<OrderAddress, AddressDto>().ReverseMap();
+            CreateMap<UserAddress, AddressDto>().ReverseMap();
 
 
             CreateMap<OrderItem, OrderItemDto>()
