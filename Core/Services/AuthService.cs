@@ -173,6 +173,8 @@ namespace Services
                 user.Address = AddressResult; 
             }
 
+           await userManager.UpdateAsync(user);
+
             return address;
         }
 
